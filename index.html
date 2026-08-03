@@ -871,12 +871,6 @@
         <li><a href="#" data-cat="med-supplies">Medical Supplies &amp; Misc <span class="cat-count">(0)</span></a></li>
       </ul>
     </div>
-    <div class="cat-section">
-      <h3>Cleaning Equipment</h3>
-      <ul>
-        <li><a href="#" data-cat="steam-cleaners">Steam Cleaners <span class="cat-count">(0)</span></a></li>
-      </ul>
-    </div>
     <!-- SPONSOR SPOT LEFT SIDEBAR -->
     <div class="ad-box" style="background:var(--orange-light);border:2px solid var(--orange);border-radius:8px;padding:12px;text-align:center;">
       <span style="font-size:9px;font-weight:bold;color:var(--orange);text-transform:uppercase;display:block;margin-bottom:6px;">★ SPONSOR THIS SPOT</span>
@@ -918,7 +912,6 @@
         <option value="gait-belts">Gait Belts</option>
         <option value="big-button-phones">Big Button Phones</option>
         <option value="incontinence-supplies">Incontinence Supplies (Unopened)</option>
-        <option value="steam-cleaners">Steam Cleaners</option>
       </select>
       <select id="condFilter">
         <option value="">Any Condition</option>
@@ -955,7 +948,6 @@
       <div class="cat-tile" onclick="filterCat('gait-belts')"><span class="cat-emoji">🎗️</span><h4>Gait Belts</h4><span class="tile-count">0 listings</span></div>
       <div class="cat-tile" onclick="filterCat('big-button-phones')"><span class="cat-emoji">☎️</span><h4>Big Button Phones</h4><span class="tile-count">0 listings</span></div>
       <div class="cat-tile" onclick="filterCat('incontinence-supplies')"><span class="cat-emoji">📦</span><h4>Incontinence Supplies</h4><span class="tile-count">0 listings</span></div>
-      <div class="cat-tile" onclick="filterCat('steam-cleaners')"><span class="cat-emoji">🧼</span><h4>Steam Cleaners</h4><span class="tile-count">0 listings</span></div>
     </div>
 
     <!-- FEATURED LISTINGS -->
@@ -1695,9 +1687,6 @@
                 <option value="nebulizers">Nebulizers</option>
                 <option value="med-supplies">Medical Supplies &amp; Misc</option>
               </optgroup>
-              <optgroup label="Cleaning Equipment">
-                <option value="steam-cleaners">Steam Cleaners</option>
-              </optgroup>
             </select>
           </div>
           <div class="form-group">
@@ -1981,9 +1970,6 @@
               <option value="blood-pressure">Blood Pressure Monitors</option>
               <option value="nebulizers">Nebulizers</option>
               <option value="med-supplies">Medical Supplies &amp; Misc</option>
-            </optgroup>
-            <optgroup label="Cleaning Equipment">
-              <option value="steam-cleaners">Steam Cleaners</option>
             </optgroup>
           </select>
         </div>
@@ -2291,11 +2277,10 @@ var BRAND_CATEGORIES = {
   'oxygen':           ['Invacare','Medline','McKesson','ResMed','DeVilbiss'],
   'blood-pressure':   ['Medline','McKesson'],
   'nebulizers':       ['Invacare','Medline','McKesson'],
-  'med-supplies':     ['Drive Medical','Invacare','Medline','McKesson'],
-  'steam-cleaners':   ['UniPro','McCullough','Oreck','Pullman']
+  'med-supplies':     ['Drive Medical','Invacare','Medline','McKesson']
 };
 
-var ALL_BRANDS = ['Drive Medical','Invacare','Pride Mobility','Golden Technologies','Medline','McKesson','Rascal','The Scooter Store','Wehwupe','Mcombo','Platinum Health','RMS','Vive','Carex','Nova Medical','Moen','Sunrise Medical','Permobil','Quickie','Hoveround','EZ Lite Cruiser','Stannah','Bruno','Acorn','Solace','Olern','Vaunn Medical','Guardian','ResMed','Jazzy','DeVilbiss','Dahaiy','UniPro','McCullough','Oreck','Pullman'];
+var ALL_BRANDS = ['Drive Medical','Invacare','Pride Mobility','Golden Technologies','Medline','McKesson','Rascal','The Scooter Store','Wehwupe','Mcombo','Platinum Health','RMS','Vive','Carex','Nova Medical','Moen','Sunrise Medical','Permobil','Quickie','Hoveround','EZ Lite Cruiser','Stannah','Bruno','Acorn','Solace','Olern','Vaunn Medical','Guardian','ResMed','Jazzy','DeVilbiss','Dahaiy'];
 
 function getBrandsForCategory(category) {
   if (!category || !BRAND_CATEGORIES[category]) return ALL_BRANDS.slice();
@@ -2659,8 +2644,7 @@ function getCategoryEmoji(cat) {
     'hospital-beds':'🛏️','lift-chairs':'🪑','mattresses':'🛌','overbed-tables':'📋',
     'grab-bars':'🔩','shower-chairs':'🚿','potty-seats':'🚽','bath-lifts':'🛁','non-slip':'🧤',
     'bed-rails':'🛌','nightstands':'🪵','stair-lifts':'🪜','ramps':'📐',
-    'oxygen':'💨','blood-pressure':'🩺','nebulizers':'💊','med-supplies':'🧪',
-    'steam-cleaners':'🧼'
+    'oxygen':'💨','blood-pressure':'🩺','nebulizers':'💊','med-supplies':'🧪'
   };
   return map[cat] || '🏥';
 }
