@@ -1,0 +1,6 @@
+dist/
+node_modules/
+
+# Browser "Save Page As" artifacts — not source, not the real working file
+index_files/
+Senior Safety Market*.html
