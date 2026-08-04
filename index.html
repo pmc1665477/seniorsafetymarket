@@ -808,6 +808,8 @@
 <div class="main-wrap">
 
   <!-- LEFT SIDEBAR: CATEGORIES -->
+  <!-- Canonical 27-slug/7-group category list. Also appears in: #listingCategory, #editCategory,
+       #catFilter, and getCategoryEmoji() below — keep all four in sync with this list. -->
   <aside class="sidebar-left">
     <div class="cat-section">
       <h3>Mobility</h3>
@@ -895,23 +897,36 @@
     <!-- SEARCH BAR -->
     <div class="search-bar">
       <input type="text" id="searchInput" placeholder="Search (e.g. wheelchair, lift chair, walker, hospital bed...)" style="flex:2;">
+      <!-- Canonical category list — see sidebar comment near .sidebar-left for the full cross-reference. -->
       <select id="catFilter" onchange="applyFilter()">
         <option value="">All Categories</option>
         <option value="wheelchairs">Wheelchairs</option>
         <option value="walkers">Walkers &amp; Rollators</option>
         <option value="canes">Canes &amp; Crutches</option>
         <option value="scooters">Power Scooters</option>
+        <option value="transport-chairs">Transport Chairs</option>
+        <option value="patient-lifts">Patient Lifts</option>
+        <option value="gait-belts">Gait Belts</option>
         <option value="hospital-beds">Electric Hospital Beds</option>
         <option value="lift-chairs">Lift Chairs</option>
+        <option value="mattresses">Pressure Relief Mattresses</option>
+        <option value="overbed-tables">Overbed Tables</option>
         <option value="grab-bars">Grab Bars</option>
-        <option value="shower-chairs">Shower Chairs</option>
+        <option value="shower-chairs">Shower Chairs &amp; Benches</option>
         <option value="potty-seats">Raised Potty Seats</option>
-        <option value="stair-lifts">Stair Lifts</option>
+        <option value="bath-lifts">Bath Lifts</option>
+        <option value="non-slip">Non-Slip Tape &amp; Mats</option>
+        <option value="bed-rails">Bed Rails &amp; Handles</option>
         <option value="nightstands">End Tables &amp; Nightstands</option>
         <option value="dressers">Dressers</option>
-        <option value="gait-belts">Gait Belts</option>
+        <option value="stair-lifts">Stair Lifts</option>
+        <option value="ramps">Ramps &amp; Threshold Ramps</option>
         <option value="big-button-phones">Big Button Phones</option>
         <option value="incontinence-supplies">Incontinence Supplies (Unopened)</option>
+        <option value="oxygen">Oxygen Equipment</option>
+        <option value="blood-pressure">Blood Pressure Monitors</option>
+        <option value="nebulizers">Nebulizers</option>
+        <option value="med-supplies">Medical Supplies &amp; Misc</option>
       </select>
       <select id="condFilter">
         <option value="">Any Condition</option>
@@ -1644,6 +1659,7 @@
         <div class="form-row">
           <div class="form-group">
             <label>Category <span class="req">*</span></label>
+            <!-- Canonical category list — see sidebar comment near .sidebar-left for the full cross-reference. -->
             <select id="listingCategory" onchange="handleListingCategoryChange(this)">
               <option value="">Select category...</option>
               <optgroup label="Mobility">
@@ -1936,6 +1952,7 @@
       <div class="form-row">
         <div class="form-group">
           <label>Category <span class="req">*</span></label>
+          <!-- Canonical category list — see sidebar comment near .sidebar-left for the full cross-reference. -->
           <select id="editCategory" onchange="handleEditCategoryChange(this)">
             <option value="">Select category...</option>
             <optgroup label="Mobility">
@@ -1945,6 +1962,7 @@
               <option value="scooters">Power Scooters</option>
               <option value="transport-chairs">Transport Chairs</option>
               <option value="patient-lifts">Patient Lifts (Hoyer/Transfer)</option>
+              <option value="gait-belts">Gait Belts</option>
             </optgroup>
             <optgroup label="Sleep &amp; Rest">
               <option value="hospital-beds">Electric Hospital Beds</option>
@@ -1954,7 +1972,7 @@
             </optgroup>
             <optgroup label="Bathroom Safety">
               <option value="grab-bars">Grab Bars</option>
-              <option value="shower-chairs">Shower Chairs</option>
+              <option value="shower-chairs">Shower Chairs &amp; Benches</option>
               <option value="potty-seats">Raised Potty Seats</option>
               <option value="bath-lifts">Bath Lifts</option>
               <option value="non-slip">Non-Slip Tape &amp; Mats</option>
@@ -1962,8 +1980,15 @@
             <optgroup label="Bedroom &amp; Living">
               <option value="bed-rails">Bed Rails &amp; Handles</option>
               <option value="nightstands">End Tables &amp; Nightstands</option>
+              <option value="dressers">Dressers</option>
               <option value="stair-lifts">Stair Lifts</option>
               <option value="ramps">Ramps &amp; Threshold Ramps</option>
+            </optgroup>
+            <optgroup label="Home &amp; Safety Essentials">
+              <option value="big-button-phones">Big Button Phones</option>
+            </optgroup>
+            <optgroup label="Personal Care">
+              <option value="incontinence-supplies">Incontinence Supplies (Unopened)</option>
             </optgroup>
             <optgroup label="Medical Devices">
               <option value="oxygen">Oxygen Equipment</option>
@@ -2638,12 +2663,14 @@ async function renderFeaturedSection(city, category, condition, searchTerm) {
   }
 }
 
+// Canonical category list — see sidebar comment near .sidebar-left for the full cross-reference.
 function getCategoryEmoji(cat) {
   var map = {
-    'wheelchairs':'♿','walkers':'🚶','canes':'🦯','scooters':'🛺','transport-chairs':'🪑','patient-lifts':'🏗️',
+    'wheelchairs':'♿','walkers':'🚶','canes':'🦯','scooters':'🛺','transport-chairs':'🪑','patient-lifts':'🏗️','gait-belts':'🎗️',
     'hospital-beds':'🛏️','lift-chairs':'🪑','mattresses':'🛌','overbed-tables':'📋',
     'grab-bars':'🔩','shower-chairs':'🚿','potty-seats':'🚽','bath-lifts':'🛁','non-slip':'🧤',
-    'bed-rails':'🛌','nightstands':'🪵','stair-lifts':'🪜','ramps':'📐',
+    'bed-rails':'🛌','nightstands':'🪵','dressers':'🗄️','stair-lifts':'🪜','ramps':'📐',
+    'big-button-phones':'☎️','incontinence-supplies':'📦',
     'oxygen':'💨','blood-pressure':'🩺','nebulizers':'💊','med-supplies':'🧪'
   };
   return map[cat] || '🏥';

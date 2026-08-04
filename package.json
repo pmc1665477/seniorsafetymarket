@@ -1,0 +1,10 @@
+{
+  "name": "seniorsafetymarket-generator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Static page generator for seniorsafetymarket.com — writes listing/category/city pages into dist/ for FTP deploy to Hostinger.",
+  "scripts": {
+    "build": "node build/generate.js"
+  }
+}
