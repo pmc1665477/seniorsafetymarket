@@ -87,6 +87,19 @@ export function buildBreadcrumbJsonLd(items) {
   };
 }
 
+export function buildItemListJsonLd(listings, urlPathForListing) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: listings.map((listing, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: BASE_URL + urlPathForListing(listing),
+      name: listing.title,
+    })),
+  };
+}
+
 export function jsonLdScript(data) {
   return `<script type="application/ld+json">\n${JSON.stringify(data)}\n</script>`;
 }

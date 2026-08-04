@@ -4642,6 +4642,30 @@ window.addEventListener('load', function() {
     }, 600);
   }
 
+  // Deep links from generated category/state/city hub pages (build/templates/*Hub.js) — reuses
+  // the existing filterCat()/renderListings()/activeCity machinery rather than new filter logic.
+  var deepLinkCat = params.get('cat');
+  var deepLinkCity = params.get('city');
+  var deepLinkState = params.get('state');
+  if (deepLinkCat || deepLinkCity || deepLinkState) {
+    setTimeout(function() {
+      if (deepLinkState) {
+        activeCity = 'state:' + deepLinkState.toUpperCase();
+        var pill = document.getElementById('activeCityPill');
+        if (pill) pill.textContent = '📍 ' + (STATE_NAMES[deepLinkState.toUpperCase()] || deepLinkState);
+      } else if (deepLinkCity) {
+        activeCity = deepLinkCity;
+        var pill2 = document.getElementById('activeCityPill');
+        if (pill2) pill2.textContent = '📍 ' + deepLinkCity;
+      }
+      if (deepLinkCat) {
+        filterCat(deepLinkCat);
+      } else {
+        renderListings(activeCity, activeCategory || null, null, null);
+      }
+    }, 300);
+  }
+
   // Handles the "Yes, re-list my item" link from the expiring-listing
   // reminder email — takes the seller straight to the Renew screen for
   // that specific listing (same screen as the "Renew" button in My
