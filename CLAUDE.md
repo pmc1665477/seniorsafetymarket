@@ -41,28 +41,49 @@ pages — that would undo the reason it was built this way.
 https://wnyklntxwcxbwjzwjkrz.supabase.co
 ```
 
-**Hosting: Hostinger, via manual FTP upload — this is the important one.** Unlike
-HelipadUSA (auto-rebuilds on Netlify) or AuthorRally (auto-deploys on push to Railway),
-**this site does NOT update itself.** From `build/generate.js`:
+**Hosting: MIGRATED to Netlify on 2026-08-12 — fully automated now, no more manual steps.**
 
-> Deployment is manual (drag `dist/` into Hostinger File Manager) — automated FTP deploy
-> from GitHub Actions was tried and abandoned because Hostinger blocks connections from
-> GitHub's IPs.
+Previously this site was on Hostinger via manual FTP upload (drag `dist/` into Hostinger's
+File Manager by hand — automated FTP from GitHub Actions was tried and abandoned because
+Hostinger blocks GitHub's IPs). That manual-deploy problem is now fixed:
 
-That means: **new listings added in Supabase will not appear on the live site until someone
-manually runs the build and manually uploads the result to Hostinger.** This is a real,
-recurring manual chore, and it directly conflicts with the user's stated goal of not having
-to come back and personally keep sites working. If the user wants this fixed, the options
-are things like: moving hosting off Hostinger to something that supports automated deploys
-(same pattern as helipadusa's Netlify setup), or setting up a recurring reminder for the
-manual step. Don't just assume it updates on its own — verify with the user when the last
-manual deploy happened if freshness matters for whatever they're asking about.
+- The generator was changed to write pages directly into the repo root (same pattern as
+  helipadusa) instead of a `dist/` subfolder, so Netlify's publish directory is just `.`.
+- Netlify project `seniorsafetymarket` (netlify.app subdomain: `seniorsafetymarket.netlify.app`)
+  deploys automatically from `github.com/pmc1665477/seniorsafetymarket` on every push to `main`.
+- A GitHub Actions daily cron (`.github/workflows/daily-rebuild.yml`) pings a Netlify build
+  hook once a day as a safety net.
+- A **Supabase Database Webhook** (table `listings`, events Insert/Update/Delete, HTTP POST
+  to the same Netlify build hook URL) triggers an *instant* rebuild whenever a listing
+  changes — set up 2026-08-12 in Database → Webhooks (reached via the Integrations →
+  Database Webhooks page, not the "Triggers" page, which only lets you pick an existing
+  Postgres function and is a dead end for this).
+
+**If webhook creation ever fails with `ERROR: 3F000: schema "supabase_functions" does not
+exist`**: this project's database was missing Supabase's internal webhook-support schema.
+Toggling the `pg_net` extension off/on does NOT fix this (tried, didn't work). The actual
+fix: run the standard Supabase `supabase_functions` schema/table/function setup SQL directly
+in the SQL Editor (additive-only — creates `supabase_functions.hooks` table and
+`supabase_functions.http_request()` trigger function, doesn't touch any real data). That was
+done here already, so this project is fixed — but if a future session sees this same error on
+a *different* Supabase project (e.g. if janitorialmarket ever gets its own Supabase project
+and hits the same gap), the same fix applies there too.
+
+**seniorsafetymarket.com's DNS still points at Hostinger** — the domain has not been
+switched over to Netlify yet. Until that happens, the live domain is still served by the old
+Hostinger setup; the Netlify version above is fully working and proven (real listing pages
+confirmed rendering correctly with live data) but only reachable at the netlify.app address
+until DNS is switched. That's the one remaining step to actually retire Hostinger for this
+site.
 
 ## Known open questions
 
-- Exactly how often the user manually redeploys this site is unknown — ask rather than
-  assume the live site reflects the latest Supabase data.
+- **DNS cutover not done yet** (see above) — seniorsafetymarket.com itself still resolves to
+  Hostinger, not the new Netlify setup, as of 2026-08-12.
+- Those old `FTP_PASSWORD` / `FTP_SERVER` / `FTP_USERNAME` GitHub Actions secrets are
+  leftover from the abandoned Hostinger-FTP automation attempt — harmless, safe to ignore or
+  delete, not used by anything anymore.
 - Same shared risk as helipadusa.com: the user's Supabase org is on the free tier, and
-  free-tier projects auto-pause after 7 days of inactivity. If this project pauses, the
-  *next manual rebuild* would fail (or serve stale/empty listings) until someone notices
-  and resumes it in the Supabase dashboard.
+  free-tier projects auto-pause after 7 days of inactivity. Now more important than before,
+  since both the daily cron AND the instant webhook depend on this Supabase project being
+  reachable.
