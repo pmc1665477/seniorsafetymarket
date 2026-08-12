@@ -76,6 +76,34 @@ confirmed rendering correctly with live data) but only reachable at the netlify.
 until DNS is switched. That's the one remaining step to actually retire Hostinger for this
 site.
 
+## DNS / domain facts (confirmed 2026-08-12 by reading Hostinger's DNS records directly)
+
+- **seniorsafetymarket.com is registered directly through Hostinger** (not an external
+  registrar) — visible in Hostinger's "Domains" list as a domain you own, expiring
+  2027-06-19, alongside `woodworkerexchange.com` (also Hostinger-registered, unrelated
+  business, not one of the 4 sites being advertised) and `elderlyequipmentmarket.com` (also
+  Hostinger-registered, never discussed before today, not investigated — a possible 5th/6th
+  business). `janitorialmarket.com` is different: listed under Hostinger's "External
+  domains" section, meaning it's registered somewhere else entirely with Hostinger only
+  connected to serve the site — its actual DNS location is still unknown as of 2026-08-12.
+- **Hostinger genuinely hosts real email for this domain** — confirmed via
+  `hostingermail-*._domainkey`, `autodiscover`, `autoconfig` DNS records. This was a guess
+  before 2026-08-12; now confirmed. Don't break email when doing any future DNS/hosting
+  changes — check for real inboxes before removing Hostinger mail records.
+- **CORRECTION: Resend (the email-sending service) IS configured for this domain**, contrary
+  to an earlier statement in this session that only authorrally.com uses Resend — that
+  claim was based only on grepping this repo's code, which doesn't cover everything. DNS
+  proof: a `resend._domainkey` TXT record, plus a `send` MX record pointing to
+  `feedback-smtp.us-east-1.amazonses.com` and a matching SPF TXT — this is Resend's standard
+  DNS setup pattern (Resend uses Amazon SES under the hood). Not found being called anywhere
+  in this repo's own code, so it may be used elsewhere (a Supabase function?) or set up but
+  unfinished — genuinely unknown, don't assume either way without checking further.
+- Because DNS records are managed directly in Hostinger's own "DNS / Nameservers" panel
+  (not delegated to Cloudflare or elsewhere for this domain), switching seniorsafetymarket.com
+  to point at Netlify means editing records on that exact page — need to find/add the record
+  for the root domain itself (only `www` had been located as of this note; the apex/root
+  record wasn't yet located, need to scroll further or check for an A/ALIAS record).
+
 ## Known open questions
 
 - **DNS cutover not done yet** (see above) — seniorsafetymarket.com itself still resolves to
