@@ -1,0 +1,19 @@
+name: Daily content refresh
+
+# Most new listings arrive by someone submitting directly into Supabase, not by a git push,
+# so Netlify's normal "rebuild on push" doesn't catch them. A Supabase Database Webhook
+# (set up in the Supabase dashboard) triggers a near-instant rebuild when that happens; this
+# daily run is just the safety net, catching anything a webhook missed or any direct edit
+# made in the Supabase table editor. Same pattern as helipadusa's daily-rebuild.yml.
+
+on:
+  schedule:
+    - cron: "43 14 * * *" # 14:43 UTC daily — an arbitrary off-the-hour time to avoid GitHub's peak-minute scheduling delays
+  workflow_dispatch: {}
+
+jobs:
+  trigger-netlify-rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Netlify build hook
+        run: curl -sf -X POST "${{ secrets.NETLIFY_BUILD_HOOK_URL }}"

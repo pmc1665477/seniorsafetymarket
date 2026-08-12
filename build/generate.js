@@ -4,8 +4,10 @@
 // Phase 4: category and state/city hub pages, thin-content-guarded (only generated where at
 // least one active listing actually exists — an empty hub page is worse for SEO than no page).
 //
-// Deployment is manual (drag dist/ into Hostinger File Manager) — automated FTP deploy from
-// GitHub Actions was tried and abandoned because Hostinger blocks connections from GitHub's IPs.
+// Deploys to Netlify, which builds and publishes straight from this repo — no manual file
+// upload step. (Previously deployed by manually dragging dist/ into Hostinger File Manager;
+// moved off Hostinger because it blocks the automated-deploy connections Netlify needs, the
+// same reason automated FTP from GitHub Actions was tried and abandoned there.)
 
 import { mkdirSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -24,7 +26,12 @@ import { generateSitemap } from "./sitemap.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
-const DIST = path.join(ROOT, "dist");
+// Generated pages are written directly into the repo root (same pattern as helipadusa's
+// generator) so Netlify's publish directory can just be ".", with these pages living
+// alongside the hand-maintained index.html/about.html/etc. at their real URL paths — not
+// nested under a dist/ subfolder, which Hostinger's manual-drag deploy needed but Netlify
+// doesn't.
+const DIST = ROOT;
 
 function writePage(urlPath, html) {
   const dir = path.join(DIST, urlPath.replace(/^\/|\/$/g, ""));
