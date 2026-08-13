@@ -59,6 +59,25 @@ Hostinger blocks GitHub's IPs). That manual-deploy problem is now fixed:
   Database Webhooks page, not the "Triggers" page, which only lets you pick an existing
   Postgres function and is a dead end for this).
 
+**A real production bug happened here, now fixed — record it so it never gets repeated.**
+The `supabase_functions.http_request()` function created by the schema-setup SQL described
+below (in "Known open questions") was missing `SECURITY DEFINER`. Without it, the trigger runs with the permissions of whoever
+triggered it — so when a real site visitor (using the public "anon" role) updated a listing
+(e.g. renewing it from an email link), the trigger tried to run as that low-privilege role,
+hit a permissions wall, and the *entire update failed* with `permission denied for schema
+supabase_functions`. This broke real listing renewals in production on 2026-08-13 until
+fixed with:
+
+```sql
+alter function supabase_functions.http_request() security definer;
+grant usage on schema supabase_functions to anon, authenticated, service_role;
+```
+
+If this project's `supabase_functions` schema is ever recreated from scratch again, make
+sure `security definer` is added to the `create or replace function
+supabase_functions.http_request() ... language plpgsql as $function$ ... $function$;`
+definition (right after `language plpgsql`) from the start — don't repeat this mistake.
+
 **If webhook creation ever fails with `ERROR: 3F000: schema "supabase_functions" does not
 exist`**: this project's database was missing Supabase's internal webhook-support schema.
 Toggling the `pg_net` extension off/on does NOT fix this (tried, didn't work). The actual
