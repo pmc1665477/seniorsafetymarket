@@ -88,12 +88,23 @@ done here already, so this project is fixed — but if a future session sees thi
 a *different* Supabase project (e.g. if janitorialmarket ever gets its own Supabase project
 and hits the same gap), the same fix applies there too.
 
-**seniorsafetymarket.com's DNS still points at Hostinger** — the domain has not been
-switched over to Netlify yet. Until that happens, the live domain is still served by the old
-Hostinger setup; the Netlify version above is fully working and proven (real listing pages
-confirmed rendering correctly with live data) but only reachable at the netlify.app address
-until DNS is switched. That's the one remaining step to actually retire Hostinger for this
-site.
+**DNS CUTOVER COMPLETE 2026-08-14.** seniorsafetymarket.com now points at Netlify for real —
+confirmed both by direct DNS lookup (resolves to `75.2.60.5`, Netlify's address) and by
+loading the live domain directly, which shows the real site with real listing counts. What
+was done: edited the existing root `A` record in Hostinger's DNS panel (`hpanel.hostinger.com
+/domain/seniorsafetymarket.com/dns`) from Hostinger's IP to `75.2.60.5`, and deleted the
+stale `AAAA @` record (Netlify gave no IPv6 equivalent, so removing it avoids IPv6-capable
+visitors hitting the old dead Hostinger address). All Hostinger *email* records
+(`hostingermail-*`, `autodiscover`, `autoconfig`, `send` MX/TXT, `resend._domainkey`) were
+left untouched and should still work exactly as before — only the website-serving records
+changed. Hostinger is no longer involved in serving this site's pages at all.
+
+One expected, harmless transition symptom: right after the DNS change, browsers showed a
+`NET::ERR_CERT_COMMON_NAME_INVALID` security warning when visiting the site — this is normal
+and temporary, because Netlify hadn't finished auto-issuing the Let's Encrypt SSL
+certificate for the domain yet (that happens automatically once Netlify's own system
+re-verifies the DNS, typically within minutes to a few hours). Not a real problem, don't
+panic if a future session sees this reported — just confirm it has since cleared.
 
 ## DNS / domain facts (confirmed 2026-08-12 by reading Hostinger's DNS records directly)
 
@@ -125,8 +136,8 @@ site.
 
 ## Known open questions
 
-- **DNS cutover not done yet** (see above) — seniorsafetymarket.com itself still resolves to
-  Hostinger, not the new Netlify setup, as of 2026-08-12.
+- Confirm the SSL certificate warning (see "DNS CUTOVER COMPLETE" above) has fully cleared
+  on a future check-in — should be automatic, but verify rather than assume.
 - Those old `FTP_PASSWORD` / `FTP_SERVER` / `FTP_USERNAME` GitHub Actions secrets are
   leftover from the abandoned Hostinger-FTP automation attempt — harmless, safe to ignore or
   delete, not used by anything anymore.
