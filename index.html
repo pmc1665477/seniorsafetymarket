@@ -628,6 +628,22 @@
   .account-nav a:hover, .account-nav a.active { background: rgba(255,255,255,0.1); color: white; text-decoration: none; }
   .account-panel { padding: 18px; }
 
+  /* BUSINESS DASHBOARD */
+  .dash-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 20px; }
+  .dash-stat-card { background: white; border: 1px solid var(--gray-border); border-left: 4px solid var(--navy); border-radius: 6px; padding: 12px 14px; }
+  .dash-stat-card.accent-green { border-left-color: var(--green); }
+  .dash-stat-card.accent-yellow { border-left-color: var(--yellow); }
+  .dash-stat-card.accent-orange { border-left-color: var(--orange); }
+  .dash-stat-card.accent-blue { border-left-color: var(--blue); }
+  .dash-stat-num { font-size: 26px; font-weight: 800; color: var(--navy); line-height: 1.1; }
+  .dash-stat-label { font-size: 11px; color: var(--text-muted); margin-top: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
+  .dash-section { background: white; border: 1px solid var(--gray-border); border-radius: 6px; padding: 14px; margin-bottom: 16px; }
+  .dash-section h4 { font-size: 14px; color: var(--navy); margin-bottom: 10px; }
+  .dash-sold-row, .dash-cat-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--gray-border); font-size: 12.5px; }
+  .dash-sold-row:last-child, .dash-cat-row:last-child { border-bottom: none; }
+  .dash-cat-bar-track { flex: 1; height: 8px; background: var(--gray-light, #f0f0f0); border-radius: 4px; margin: 0 10px; overflow: hidden; }
+  .dash-cat-bar-fill { height: 100%; background: var(--green); border-radius: 4px; }
+
   /* HIDDEN */
   .hidden { display: none !important; }
 
@@ -1558,6 +1574,7 @@
         <a href="#" onclick="switchTab('messages')">Messages <span id="msgBadge" style="background:var(--red);color:white;font-size:10px;padding:1px 5px;border-radius:8px;margin-left:4px;display:none;"></span></a>
         <a href="#" onclick="switchTab('billing')">Billing / Upgrades</a>
         <a href="#" onclick="switchTab('settings')">Account Settings</a>
+        <a href="#" id="dashboardNavLink" onclick="switchTab('dashboard')" style="display:none;color:var(--orange);">Business Dashboard</a>
         <a href="#" id="adminNavLink" onclick="switchTab('admin')" style="display:none;color:var(--orange);">Admin Panel</a>
         <a href="#" onclick="logOut()" style="background:var(--red-light);color:var(--red);margin:auto 14px 14px 14px;padding:9px 14px;border-radius:6px;font-weight:700;text-align:center;font-size:14px;">🚪 Sign Out</a>
       </nav>
@@ -1599,6 +1616,37 @@
             </div>
           </div>
           <button class="btn btn-primary" onclick="saveAccountSettings()">Save Settings</button>
+        </div>
+        <div id="tab-dashboard" class="hidden">
+          <h3 style="font-size:15px;color:var(--orange);margin-bottom:4px;">Business Dashboard</h3>
+          <p style="font-size:12px;color:var(--text-muted);margin-bottom:14px;">A snapshot of the business — the kind of numbers a buyer would want to see.</p>
+          <div id="dashLoadingMsg" style="padding:20px;text-align:center;color:#8a909a;font-size:13px;">Loading live numbers…</div>
+          <div id="dashContent" class="hidden">
+            <div class="dash-stats">
+              <div class="dash-stat-card accent-green"><div class="dash-stat-num" id="dashActiveListings">–</div><div class="dash-stat-label">Active Listings</div></div>
+              <div class="dash-stat-card"><div class="dash-stat-num" id="dashTotalListings">–</div><div class="dash-stat-label">Total Ever Posted</div></div>
+              <div class="dash-stat-card accent-blue"><div class="dash-stat-num" id="dashMembers">–</div><div class="dash-stat-label">Registered Members</div></div>
+              <div class="dash-stat-card accent-yellow"><div class="dash-stat-num" id="dashSold">–</div><div class="dash-stat-label">Items Sold (All-Time)</div></div>
+              <div class="dash-stat-card accent-orange"><div class="dash-stat-num" id="dashFeatured">–</div><div class="dash-stat-label">Featured Upgrades Sold</div></div>
+              <div class="dash-stat-card"><div class="dash-stat-num" id="dashMessages">–</div><div class="dash-stat-label">Buyer Messages Sent</div></div>
+            </div>
+
+            <div class="dash-section">
+              <h4>📈 Traffic &amp; Reach</h4>
+              <p style="font-size:12.5px;color:var(--text-muted);margin-bottom:8px;">Visit and traffic data lives in Google Analytics (already connected to this site) rather than here — pulling it into this page would mean exposing Analytics credentials in the site's public code, which isn't safe to do.</p>
+              <a class="btn btn-secondary btn-sm" href="https://analytics.google.com/analytics/web/" target="_blank" rel="noopener">Open Google Analytics →</a>
+            </div>
+
+            <div class="dash-section">
+              <h4>🏷️ Listings by Category</h4>
+              <div id="dashCategoryBreakdown"><div style="color:#8a909a;font-size:12px;">Loading…</div></div>
+            </div>
+
+            <div class="dash-section">
+              <h4>💰 Recently Sold</h4>
+              <div id="dashRecentlySold"><div style="color:#8a909a;font-size:12px;">Loading…</div></div>
+            </div>
+          </div>
         </div>
         <div id="tab-admin" class="hidden">
           <h3 style="font-size:15px;color:var(--orange);margin-bottom:4px;">Admin Panel</h3>
@@ -3640,7 +3688,7 @@ function showDashboard() {
 }
 
 function switchTab(tabName) {
-  ['my-listings','messages','billing','settings','admin'].forEach(function(t) {
+  ['my-listings','messages','billing','settings','admin','dashboard'].forEach(function(t) {
     var el = document.getElementById('tab-'+t);
     if (el) el.classList.add('hidden');
   });
@@ -3650,6 +3698,7 @@ function switchTab(tabName) {
   if (tabName === 'messages') loadDashboardMessages();
   if (tabName === 'my-listings') loadDashboardListings();
   if (tabName === 'settings') populateAccountSettings();
+  if (tabName === 'dashboard') loadBusinessDashboard();
 }
 
 function populateAccountSettings() {
@@ -3901,7 +3950,71 @@ var ADMIN_EMAIL = 'pete.mcnees@yahoo.com';
 function checkAdminAccess() {
   var user = getCurrentUser();
   var adminLink = document.getElementById('adminNavLink');
-  if (user && user.email === ADMIN_EMAIL && adminLink) adminLink.style.display = 'block';
+  var dashLink = document.getElementById('dashboardNavLink');
+  if (user && user.email === ADMIN_EMAIL) {
+    if (adminLink) adminLink.style.display = 'block';
+    if (dashLink) dashLink.style.display = 'block';
+  }
+}
+
+async function loadBusinessDashboard() {
+  var loadingEl = document.getElementById('dashLoadingMsg');
+  var contentEl = document.getElementById('dashContent');
+  var client = initDB();
+  if (!client) { if (loadingEl) loadingEl.textContent = 'Database not connected.'; return; }
+
+  var results = await Promise.all([
+    client.from('listings').select('id', { count: 'exact', head: true }).eq('is_active', true),
+    client.from('listings').select('id', { count: 'exact', head: true }),
+    client.from('users').select('id', { count: 'exact', head: true }),
+    client.from('listings').select('id', { count: 'exact', head: true }).eq('is_sold', true),
+    client.from('listings').select('id', { count: 'exact', head: true }).eq('is_featured', true),
+    client.from('messages').select('id', { count: 'exact', head: true }),
+    client.from('listings').select('category').eq('is_active', true),
+    client.from('listings').select('title,price,city,sold_at,category,is_donate').eq('is_sold', true).order('sold_at', { ascending: false }).limit(15)
+  ]);
+
+  var activeCount = results[0].count || 0;
+  var totalCount = results[1].count || 0;
+  var memberCount = results[2].count || 0;
+  var soldCount = results[3].count || 0;
+  var featuredCount = results[4].count || 0;
+  var messageCount = results[5].count || 0;
+  var categoryRows = results[6].data || [];
+  var recentlySold = results[7].data || [];
+
+  document.getElementById('dashActiveListings').textContent = activeCount.toLocaleString();
+  document.getElementById('dashTotalListings').textContent = totalCount.toLocaleString();
+  document.getElementById('dashMembers').textContent = memberCount.toLocaleString();
+  document.getElementById('dashSold').textContent = soldCount.toLocaleString();
+  document.getElementById('dashFeatured').textContent = featuredCount.toLocaleString();
+  document.getElementById('dashMessages').textContent = messageCount.toLocaleString();
+
+  // Category breakdown, sorted by count descending, capped to the top 10
+  var catCounts = {};
+  categoryRows.forEach(function(r) { if (r.category) catCounts[r.category] = (catCounts[r.category] || 0) + 1; });
+  var catEntries = Object.keys(catCounts).map(function(k) { return { slug: k, count: catCounts[k] }; }).sort(function(a, b) { return b.count - a.count; }).slice(0, 10);
+  var maxCatCount = catEntries.length ? catEntries[0].count : 1;
+  var catHtml = catEntries.length ? catEntries.map(function(c) {
+    var pct = Math.round((c.count / maxCatCount) * 100);
+    var prettyLabel = c.slug.replace(/-/g, ' ').replace(/\b\w/g, function(ch) { return ch.toUpperCase(); });
+    return '<div class="dash-cat-row"><span style="min-width:130px;">' + escapeHtml(prettyLabel) + '</span>' +
+      '<span class="dash-cat-bar-track"><span class="dash-cat-bar-fill" style="width:' + pct + '%;"></span></span>' +
+      '<strong>' + c.count + '</strong></div>';
+  }).join('') : '<div style="color:#8a909a;font-size:12px;">No active listings yet.</div>';
+  document.getElementById('dashCategoryBreakdown').innerHTML = catHtml;
+
+  // Recently sold list
+  var soldHtml = recentlySold.length ? recentlySold.map(function(l) {
+    var priceText = l.is_donate || !l.price || parseFloat(l.price) === 0 ? 'FREE' : '$' + parseFloat(l.price).toLocaleString();
+    var dateText = l.sold_at ? new Date(l.sold_at).toLocaleDateString() : '';
+    return '<div class="dash-sold-row"><span>' + escapeHtml(l.title) + ' <span style="color:var(--text-muted);">— ' + escapeHtml(l.city || '') + '</span></span>' +
+      '<span><strong style="color:var(--green);">' + priceText + '</strong> <span style="color:var(--text-muted);">' + dateText + '</span></span></div>';
+  }).join('') : '<div style="color:#8a909a;font-size:12px;">No sold items recorded yet.</div>';
+  document.getElementById('dashRecentlySold').innerHTML = soldHtml;
+
+  if (loadingEl) loadingEl.classList.add('hidden');
+  if (contentEl) contentEl.classList.remove('hidden');
 }
 
 async function adminLoadListings(filter) {
