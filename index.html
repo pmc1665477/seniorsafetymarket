@@ -1854,12 +1854,12 @@
           <h3>🚀 Sell Faster — Feature Your Listing!</h3>
           <p>Featured listings appear <strong>pinned at the top</strong> of their category page. Sellers with featured listings get <strong>3–5x more views</strong> and sell significantly faster. It's just $7 for 7 days!</p>
           <div class="upsell-choice">
-            <div class="upsell-card" id="upsell-free" onclick="selectUpsell('free')">
+            <div class="upsell-card selected" id="upsell-free" onclick="selectUpsell('free')">
               <div class="upsell-price" style="font-size:16px;color:var(--text-muted);">FREE</div>
               <div class="upsell-label">Standard Listing</div>
               <div class="upsell-benefit" style="color:var(--text-muted);">30-day listing</div>
             </div>
-            <div class="upsell-card selected" id="upsell-7" onclick="selectUpsell('7')">
+            <div class="upsell-card" id="upsell-7" onclick="selectUpsell('7')">
               <div class="upsell-price">$7</div>
               <div class="upsell-label">7-Day Featured</div>
               <div class="upsell-benefit">⭐ Top of category!</div>
@@ -2998,7 +2998,7 @@ function isBotSubmission(honeypotEl) {
   timingCheckPassed = true;
   return false;
 }
-var selectedUpsell = '7';
+var selectedUpsell = 'free';
 var pendingPhotoFiles = [];
 var isDonateListing = false;
 
