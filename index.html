@@ -562,8 +562,28 @@
   .upsell-box h3 { font-size: 14px; color: var(--orange); margin-bottom: 6px; }
   .upsell-box p { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; line-height: 1.5; }
   .upsell-choice { display: flex; gap: 10px; flex-wrap: wrap; }
-  .upsell-card { flex: 1; min-width: 130px; border: 2px solid var(--gray-border); border-radius: 6px; padding: 10px; text-align: center; background: white; cursor: pointer; transition: all 0.15s; }
-  .upsell-card:hover, .upsell-card.selected { border-color: var(--yellow); background: #fffef5; }
+  .upsell-card { position: relative; flex: 1; min-width: 130px; border: 2px solid var(--gray-border); border-radius: 6px; padding: 10px; text-align: center; background: white; cursor: pointer; transition: all 0.15s; }
+  .upsell-card:hover { border-color: var(--yellow); background: #fffef5; }
+  .upsell-card.selected {
+    border: 4px solid var(--yellow);
+    background: #fff6cc;
+    box-shadow: 0 0 0 4px rgba(245, 197, 24, 0.45), 0 3px 10px rgba(0,0,0,0.2);
+  }
+  .upsell-card.selected::before {
+    content: "\2713 SELECTED";
+    position: absolute;
+    top: -13px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--navy);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 2px 12px;
+    border-radius: 10px;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+  }
   .upsell-card .upsell-price { font-size: 20px; font-weight: bold; color: var(--navy); }
   .upsell-card .upsell-label { font-size: 12px; color: var(--text-muted); }
   .upsell-card .upsell-benefit { font-size: 11px; color: var(--green); margin-top: 4px; font-weight: bold; }
