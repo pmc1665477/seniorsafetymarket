@@ -145,3 +145,45 @@ panic if a future session sees this reported — just confirm it has since clear
   free-tier projects auto-pause after 7 days of inactivity. Now more important than before,
   since both the daily cron AND the instant webhook depend on this Supabase project being
   reachable.
+
+## Session of 2026-08-18 — status as of last update (read this if picking up mid-session)
+
+**Done and pushed tonight, in order:**
+1. `6f6b6df` — Made the selected pricing card in the "Boost?" step visually obvious (thick
+   border + "SELECTED" badge). Same fix also applied to janitorialmarket.com.
+2. `94ccf34` — Fixed the posting wizard defaulting to the **$7 Featured** tier instead of
+   Free (both the JS `selectedUpsell` variable and the static HTML `selected` class were
+   wrong). Same fix also applied to janitorialmarket.com.
+3. `5ff97b2` — Added a new admin-gated **"Business Dashboard"** tab (My Account →
+   dashboardNavLink, same ADMIN_EMAIL gate as the existing Admin Panel) showing active
+   listings, total listings ever, registered members, items sold, featured-upgrade count,
+   buyer messages sent, a category breakdown, and a recently-sold list — all live from
+   Supabase. Traffic/reach deliberately links out to Google Analytics instead of trying to
+   embed it (can't safely pull GA data into public client-side code).
+
+**UNRESOLVED as of last check — the $7-default bug (fix #2 above):** the user tested the
+live site *after* commit `94ccf34` was confirmed "Published" on Netlify (checked the actual
+deployed `index.html` file directly via Netlify's deploy file browser — it has the correct
+fix in it), tested in a fresh Incognito window (rules out browser cache), and **still saw
+$7 pre-selected on the live site.** Ruled out so far: browser cache, the deployed file
+itself, DNS/Cloudflare (this domain has no Cloudflare involvement — see helipadusa's
+CLAUDE.md, Cloudflare is that site only), duplicate markup elsewhere in the file, a stale
+service worker (none exists in this repo). Suggested next step that wasn't confirmed done
+yet: Netlify Deploys page → "Trigger deploy" dropdown → **"Clear cache and deploy site"**
+(a harder cache-bust than a normal deploy). If a future session hits this same "code is
+right but the live site is wrong" wall again, start there, and also consider asking the user
+to check Netlify's own Post-processing/asset-optimization settings (Project configuration →
+Build & deploy) for anything that could rewrite HTML after build.
+
+**Requested but NOT YET STARTED:** a bulk email tool for marketing to all registered
+members, using the user's existing Resend account. Useful context already on hand:
+- Resend is already DNS-configured for this exact domain (see "DNS / domain facts" above —
+  `resend._domainkey`, SPF, `send` MX to `feedback-smtp.us-east-1.amazonses.com`) but not
+  yet confirmed to be *called* anywhere in this repo's code.
+- This needs a server-side piece (a Netlify serverless function), since a Resend API key
+  must never be embedded in this site's public client-side code the way SUPABASE_KEY is
+  (that one's meant to be public — an anon key — Resend's is not).
+- Will need the user to add a `RESEND_API_KEY` environment variable in Netlify (from their
+  Resend account dashboard) before it can actually send anything.
+- Recipient list should come from the `users` table (same one the Business Dashboard's
+  member count reads from).
