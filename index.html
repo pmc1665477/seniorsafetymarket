@@ -3946,12 +3946,12 @@ async function saveAccountSettings() {
   }
 }
 
-var ADMIN_EMAIL = 'pete.mcnees@yahoo.com';
+var ADMIN_EMAILS = ['pete.mcnees@yahoo.com', 'info@seniorsafetymarket.com'];
 function checkAdminAccess() {
   var user = getCurrentUser();
   var adminLink = document.getElementById('adminNavLink');
   var dashLink = document.getElementById('dashboardNavLink');
-  if (user && user.email === ADMIN_EMAIL) {
+  if (user && ADMIN_EMAILS.indexOf(user.email) !== -1) {
     if (adminLink) adminLink.style.display = 'block';
     if (dashLink) dashLink.style.display = 'block';
   }
