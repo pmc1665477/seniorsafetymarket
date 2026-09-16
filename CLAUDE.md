@@ -141,10 +141,27 @@ panic if a future session sees this reported — just confirm it has since clear
 - Those old `FTP_PASSWORD` / `FTP_SERVER` / `FTP_USERNAME` GitHub Actions secrets are
   leftover from the abandoned Hostinger-FTP automation attempt — harmless, safe to ignore or
   delete, not used by anything anymore.
-- Same shared risk as helipadusa.com: the user's Supabase org is on the free tier, and
-  free-tier projects auto-pause after 7 days of inactivity. Now more important than before,
-  since both the daily cron AND the instant webhook depend on this Supabase project being
-  reachable.
+- **Same shared risk as helipadusa.com — HAPPENED, RESOLVED 2026-09-16.** This project has
+  its own separate Supabase database (`wnyklntxwcxbwjzwjkrz.supabase.co`, confirmed above),
+  but Supabase bills at the **organization** level, not per-project — and the whole
+  `primebuildingsolutions@gmail.com's Org` (Free Plan) exceeded its org-wide **Cached
+  Egress** quota (5GB/month, shared across every project in the org, this one included) from
+  janitorialmarket serving listing photos. Effect on that site was broken photo thumbnails
+  everywhere; this project wasn't confirmed broken the same way but was equally at risk since
+  it draws from the same org-wide cap. Fixed by upgrading the org to the **Pro plan**
+  (~$25/mo, raises the cap to 100GB). Also added **client-side photo compression before
+  upload** here (new `compressImageFile()`, used in both `uploadPhotosToSupabase` and the
+  edit-listing upload loop around line ~4190) — resizes to a 1600px max dimension and
+  re-encodes at ~82% quality via canvas, cutting typical raw phone-photo size 80-90% with no
+  visible quality loss. Same fix also applied to janitorialmarket and helipadusa (4 separate
+  upload code paths there). If org-wide Cached Egress usage ever gets tight again, check
+  Supabase org Usage first (org-wide, not per-project) before assuming it's this site's
+  database specifically.
+- Business reality as of 2026-09-16 (from working across the user's sites this session): only
+  one $7 sale has ever happened, anywhere, across any of these marketplace sites (that one
+  was on janitorialmarket), and zero Google-affiliate-store sales on any site. No outside
+  investors. The user is watching costs closely — bias toward free/cheap efficiency fixes
+  over suggesting paid tools/upgrades for this site too, not just janitorialmarket.
 
 ## Session of 2026-08-18 — status as of last update (read this if picking up mid-session)
 
