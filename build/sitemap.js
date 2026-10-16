@@ -22,6 +22,9 @@ const STATIC_PAGES = [
   { path: "/free-wheelchair-near-me.html", priority: "0.6", changefreq: "monthly" },
   { path: "/used-hospital-bed-buying-guide.html", priority: "0.6", changefreq: "monthly" },
   { path: "/used-equipment-savings.html", priority: "0.6", changefreq: "monthly" },
+  { path: "/used-rollator-mobility-scooter-buying-guide.html", priority: "0.6", changefreq: "monthly" },
+  { path: "/best-lift-chair-for-seniors.html", priority: "0.6", changefreq: "monthly" },
+  { path: "/walk-in-tub-buying-guide.html", priority: "0.7", changefreq: "monthly" },
 ];
 
 function lastmodOf(row) {
