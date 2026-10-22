@@ -216,5 +216,12 @@ members, using the user's existing Resend account. Useful context already on han
 - First 7 pins (one per guide page) built in the site's exact colors (navy #1a3a2a, green
   #2a7a4e, mint #e8f5ee, gold #f5c518, Arial-style bold) — posted/scheduled one per day
   Oct 21–27, 7:00 PM. Keep future pins in this same style for consistency.
+- Pins 8–12 (walk-in tub batch: is it right for your parent, Medicare/help paying, door types,
+  features worth paying for, fear of falling) all link to `walk-in-tub-buying-guide.html`, on the
+  Aging in Place & Home Safety board, scheduled one per day Oct 28–Nov 1, 7:00 PM. Pin content
+  was drawn only from what that page actually says — keep doing that.
+- Pinterest tag search is picky: "caregiver" works; "medicare" and "walk-in tub" did not.
+- If pasting pinterest.com/pin-creation-tool bounces to Business Hub, use the ≡ menu next to
+  "Business Hub" → Create → Create Pin.
 - The walk-in tub guide page carries the Ella's Bubbles tracked link, so walk-in tub /
   bathroom-safety pins pointing there are the highest-value next pins.
