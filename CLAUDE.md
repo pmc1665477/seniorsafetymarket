@@ -204,3 +204,17 @@ members, using the user's existing Resend account. Useful context already on han
   Resend account dashboard) before it can actually send anything.
 - Recipient list should come from the `users` table (same one the Business Dashboard's
   member count reads from).
+
+## Pinterest (set up 2026-10-21)
+
+- Business account **Senior Safety Market**, username `seniorsafetymarket`, login email
+  `info@seniorsafetymarket.com`. Website claimed via the `p:domain_verify` meta tag near the
+  top of the hand-maintained root `index.html` — **don't remove that tag** or Pinterest drops
+  the claim.
+- Boards: Caring for Aging Parents; Aging in Place & Home Safety; Senior Care Equipment
+  Buying Guides.
+- First 7 pins (one per guide page) built in the site's exact colors (navy #1a3a2a, green
+  #2a7a4e, mint #e8f5ee, gold #f5c518, Arial-style bold) — posted/scheduled one per day
+  Oct 21–27, 7:00 PM. Keep future pins in this same style for consistency.
+- The walk-in tub guide page carries the Ella's Bubbles tracked link, so walk-in tub /
+  bathroom-safety pins pointing there are the highest-value next pins.
