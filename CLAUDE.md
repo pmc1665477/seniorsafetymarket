@@ -225,3 +225,20 @@ members, using the user's existing Resend account. Useful context already on han
   "Business Hub" → Create → Create Pin.
 - The walk-in tub guide page carries the Ella's Bubbles tracked link, so walk-in tub /
   bathroom-safety pins pointing there are the highest-value next pins.
+
+## Advertising offer (updated 2026-11-19)
+
+- Advertise page (`#page-advertise` in root `index.html`) now sells ONE product: **Trusted
+  Local Partner, $29/month or $290/year** (logo, short description, link; homepage + St.
+  Louis pages; month to month). Old $300/$150/$100/$75 tiers removed. Opening copy no longer
+  claims "thousands every month" (real traffic is ~30-100 visitors/week) — keep it honest.
+- The "Contact Me" email box on that page used to just show an alert and discard the email.
+  It now POSTs to Formspree `mjgqylkn` (same form ID as contact.html) with subject
+  "New advertiser interest - SeniorSafetyMarket".
+- Existing empty ad slots: 3 in the right sidebar ("SIDEBAR AD 1-3") and 1 "SPONSOR THIS
+  SPOT" in the left sidebar. On phones (<900px) the sidebars stack, and the right sidebar
+  lands BELOW all listings — so once sponsors sign, plan a single row of sponsor logos near
+  the top (under the Ella's Bubbles bar) so they're visible on phones.
+- User is emailing local St. Louis prospects (home care, elder law, home modification,
+  medical supply) with this $29 pitch. Payment links for $29/mo and $290/yr still need to be
+  created in the SSM Stripe account when the first sponsor says yes.
