@@ -1428,53 +1428,20 @@
 <div id="page-advertise" style="display:none;">
 <div class="main-wrap" style="flex-direction:column;">
   <div class="section-title" style="font-size:18px;">📣 Advertise on Senior Safety Market</div>
-  <p style="color:var(--text-muted); margin-bottom:20px; font-size:13px;">Reach thousands of family caregivers, seniors, and home health professionals every month. Our audience is actively looking for home safety services and senior care solutions — perfect for contractors, home care agencies, physical therapists, senior placement specialists and more.</p>
+  <p style="color:var(--text-muted); margin-bottom:20px; font-size:14px;">Our visitors are families and caregivers looking for wheelchairs, hospital beds, lift chairs and other senior care equipment, usually right after a fall, injury or hospital stay. That is exactly when they also need home care, home safety work, elder law help and senior living advice. Put your business in front of them for less than a dollar a day.</p>
 
-  <div class="ad-tiers">
+  <div class="ad-tiers" style="grid-template-columns:minmax(0,440px);justify-content:center;">
     <div class="ad-tier-card" style="border-color:var(--yellow);border-width:2px;">
-      <h3>Top Banner</h3>
-      <div class="tier-price">$300<span style="font-size:14px;font-weight:normal;">/month</span></div>
+      <h3>Trusted Local Partner</h3>
+      <div class="tier-price">$29<span style="font-size:14px;font-weight:normal;">/month</span></div>
+      <div style="font-size:14px;color:var(--navy);font-weight:bold;margin-top:4px;">or $290 for a full year (save $58)</div>
       <ul>
-        <li>✅ Top of every page</li>
-        <li>✅ 728x90 leaderboard</li>
-        <li>✅ Highest visibility</li>
-        <li>✅ Monthly analytics report</li>
-        <li>✅ Logo + tagline + link</li>
+        <li>✅ Your logo, a short description and a link to your website</li>
+        <li>✅ Shown on the homepage and the St. Louis pages</li>
+        <li>✅ Great for home care agencies, home safety installers, elder law, senior placement and medical supply</li>
+        <li>✅ Month to month, cancel anytime</li>
       </ul>
-      <a href="#" onclick="openAdSignup('banner')" class="btn btn-primary" style="display:block;margin-top:12px;text-align:center;">Get Started</a>
-    </div>
-    <div class="ad-tier-card">
-      <h3>Sidebar Ad</h3>
-      <div class="tier-price">$150<span style="font-size:14px;font-weight:normal;">/month</span></div>
-      <ul>
-        <li>✅ Right sidebar, all pages</li>
-        <li>✅ 200x200 box ad</li>
-        <li>✅ Business name, description &amp; link</li>
-        <li>✅ Bi-weekly performance update</li>
-      </ul>
-      <a href="#" onclick="openAdSignup('sidebar')" class="btn btn-secondary" style="display:block;margin-top:12px;text-align:center;">Get Started</a>
-    </div>
-    <div class="ad-tier-card">
-      <h3>Category Sponsor</h3>
-      <div class="tier-price">$100<span style="font-size:14px;font-weight:normal;">/month</span></div>
-      <ul>
-        <li>✅ Sponsor one category page</li>
-        <li>✅ Logo at top of category</li>
-        <li>✅ Highly targeted audience</li>
-        <li>✅ E.g., "Walkers sponsored by ABC Home Care"</li>
-      </ul>
-      <a href="#" onclick="openAdSignup('category')" class="btn btn-secondary" style="display:block;margin-top:12px;text-align:center;">Get Started</a>
-    </div>
-    <div class="ad-tier-card" style="border-color:var(--donate);border-width:2px;">
-      <h3>Featured Business</h3>
-      <div class="tier-price">$75<span style="font-size:14px;font-weight:normal;">/month</span></div>
-      <ul>
-        <li>✅ Left sidebar placement</li>
-        <li>✅ Business card style ad</li>
-        <li>✅ Great for local service providers</li>
-        <li>✅ Home safety installers, senior care, PT</li>
-      </ul>
-      <a href="#" onclick="openAdSignup('featured')" class="btn btn-donate" style="display:block;margin-top:12px;text-align:center;color:white;">Get Started</a>
+      <a href="#" onclick="openAdSignup('partner');return false;" class="btn btn-primary" style="display:block;margin-top:12px;text-align:center;">Get Started</a>
     </div>
   </div>
 
@@ -1482,9 +1449,10 @@
     <h3 style="color:var(--navy);margin-bottom:6px;">Ready to reach family caregivers &amp; seniors?</h3>
     <p style="color:var(--text-muted);font-size:13px;margin-bottom:12px;">Email us at <strong>ads@seniorsafetymarket.com</strong> or enter your email below and we'll contact you within 24 hours.</p>
     <div style="display:flex;gap:10px;max-width:400px;margin:0 auto;">
-      <input type="email" placeholder="your@business.com" style="flex:1;border:1px solid var(--gray-border);border-radius:4px;padding:8px;font-size:13px;">
-      <button class="btn btn-primary" onclick="showAdInterest()">Contact Me</button>
+      <input type="email" id="adInterestEmail" placeholder="your@business.com" style="flex:1;border:1px solid var(--gray-border);border-radius:4px;padding:8px;font-size:13px;">
+      <button class="btn btn-primary" id="adInterestBtn" onclick="showAdInterest()">Contact Me</button>
     </div>
+    <p id="adInterestMsg" style="font-size:13px;margin-top:10px;min-height:16px;"></p>
   </div>
 </div>
 </div>
@@ -4537,7 +4505,24 @@ function timeAgo(dateStr) {
   return Math.floor(diff/604800)+' weeks ago';
 }
 function showAlertSuccess() { alert('You are now subscribed to new listing alerts for your area! We will email you when new equipment is posted.'); }
-function showAdInterest() { alert('Thanks for your interest! We will contact you within 24 hours to get your advertisement live on SeniorSafetyMarket.com.'); }
+function showAdInterest() {
+  var box = document.getElementById('adInterestEmail');
+  var msg = document.getElementById('adInterestMsg');
+  var btn = document.getElementById('adInterestBtn');
+  var email = (box.value || '').trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { msg.style.color = '#b91c1c'; msg.textContent = 'Please enter a valid email address.'; return; }
+  btn.disabled = true; msg.style.color = '#555'; msg.textContent = 'Sending...';
+  fetch('https://formspree.io/f/mjgqylkn', {
+    method: 'POST',
+    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: email, _subject: 'New advertiser interest - SeniorSafetyMarket', message: 'A business asked about the $29/month Trusted Local Partner spot from the Advertise page. Their email: ' + email })
+  }).then(function (r) {
+    if (!r.ok) throw new Error('send failed');
+    msg.style.color = '#166534'; msg.textContent = 'Thanks! We will contact you within 24 hours.'; box.value = '';
+  }).catch(function () {
+    msg.style.color = '#b91c1c'; msg.textContent = 'Sorry, that did not go through. Please email ads@seniorsafetymarket.com instead.';
+  }).finally(function () { btn.disabled = false; });
+}
 
 function showInfoPage(page) {
   var titles = { about:'About Senior Safety Market', privacy:'Privacy Policy', terms:'Terms of Service', contact:'Contact Us' };
@@ -4555,7 +4540,7 @@ function showInfoPage(page) {
   bodyEl.innerHTML = bodies[page] || '';
   modal.classList.add('active');
 }
-function openAdSignup(type) { alert('Thank you for your interest in advertising on SeniorSafetyMarket.com!\n\nEmail us at ads@seniorsafetymarket.com with your business name and we will send you our media kit and get your ad live within 24 hours.'); }
+function openAdSignup(type) { alert('Thank you for your interest in a Trusted Local Partner spot on SeniorSafetyMarket.com!\n\nIt is $29 a month, or $290 for a full year.\n\nEmail ads@seniorsafetymarket.com with your business name, logo and a short description, and we will get your spot live within a few days of payment.'); }
 
 /* ============================================================
    ON PAGE LOAD
